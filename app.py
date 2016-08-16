@@ -28,6 +28,7 @@ def index():
 			p.line(array(w['Date'],dtype=datetime64),list(w[app.vars['Method']]))
 			script, div = components(p)
 			#return render_template('outpage.html',name=app.vars['Name'])
+			print 'here'
 			return render_template('outpage.html',name=app.vars['Name'].toUpper(),s=script,d=div)
 		except:
 			return render_template('errorpage.html')
