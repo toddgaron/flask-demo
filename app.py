@@ -21,15 +21,16 @@ def index():
 		app.vars['Name']=request.form['name']
 		app.vars['Method']=request.form['method']
 		try:
-			w=get('https://www.quandl.com/api/v3/datasets/WIKI/{}/data.json'.format(app.vars['Name'])).text
+			w=get('https://www.quandl.com/api/v3/datasets/WIKI/{}/data.json?api_key=2HugxxJfTx-g-EXLbDx-'.format(app.vars['Name'])).text
 			w=loads(w)
+			print 'jw'
 			w=DataFrame(w['dataset_data']['data'],columns=w['dataset_data']['column_names'])
+			print 'jw'
 			p=figure(width=800,height=400,x_axis_type="datetime")
+			print 'here'
 			p.line(array(w['Date'],dtype=datetime64),list(w[app.vars['Method']]))
 			script, div = components(p)
-			#return render_template('outpage.html',name=app.vars['Name'])
-			print div
-			return render_template('outpage.html',name=app.vars['Name'].toUpper(),s='',d='')#script,d=div)
+			return render_template('outpage.html',name=app.vars['Name'],s=script,d=div)
 		except:
 			return render_template('errorpage.html')
 
