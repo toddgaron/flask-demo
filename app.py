@@ -26,6 +26,8 @@ def index():
 			w=DataFrame(w['dataset_data']['data'],columns=w['dataset_data']['column_names'])
 			p=figure(width=800,height=400,x_axis_type="datetime")
 			p.line(array(w['Date'],dtype=datetime64),list(w[app.vars['Method']]))
+			p.xaxis.axis_label = "Time"
+			p.yaxis.axis_label = app.vars['Method']
 			script, div = components(p)
 			return render_template('outpage.html',name=app.vars['Name'],s=script,d=div)
 		except:
