@@ -29,7 +29,7 @@ def index():
 			script, div = components(p)
 			#return render_template('outpage.html',name=app.vars['Name'])
 			print div
-			return render_template('outpage.html',name=app.vars['Name'].toUpper(),s=script,d=div)
+			return render_template('outpage.html',name=app.vars['Name'].toUpper(),s='',d='')#script,d=div)
 		except:
 			return render_template('errorpage.html')
 
