@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, redirect
 from requests import get
 from simplejson import loads
-from pandas import DataFrame
-from numpy import array, datetime64
+from pandas import DataFrame,to_datetime
 from bokeh.plotting import figure
 from bokeh.embed import components
+from dateutil.relativedelta import *
 
 app = Flask(__name__)
 app.vars={}
@@ -23,9 +23,14 @@ def index():
 		try:
 			w=get('https://www.quandl.com/api/v3/datasets/WIKI/{}/data.json?api_key=2HugxxJfTx-g-EXLbDx-'.format(app.vars['Name'])).text
 			w=loads(w)
-			w=DataFrame(w['dataset_data']['data'],columns=w['dataset_data']['column_names'])
+			w=DataFrame([row[1:] for row in w['dataset_data']['data']],columns=w['dataset_data']['column_names'][1:],index=to_datetime([row[0] for row in w['dataset_data']['data']]))
+			first = w.index[0]
+			print first
+			last = first +relativedelta(months=-1)
+			print last
+			wMonth=w[first:last]
 			p=figure(width=800,height=400,x_axis_type="datetime")
-			p.line(array(w['Date'],dtype=datetime64),list(w[app.vars['Method']]))
+			p.line(wMonth.index,list(w[app.vars['Method']]))
 			p.xaxis.axis_label = "Time"
 			p.yaxis.axis_label = app.vars['Method']
 			script, div = components(p)
